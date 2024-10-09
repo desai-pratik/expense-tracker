@@ -53,9 +53,8 @@ const AddExpensePage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      const existingData = JSON.parse(localStorage.getItem("expensesData")) || {};
-      const usedCategories = JSON.parse(localStorage.getItem("usedCategories")) || [];
-
+      const existingData = JSON.parse(localStorage.getItem("expensesData")) || [];
+  
       const newExpense = {
         id: Date.now(),
         amount: formData.amount,
@@ -64,15 +63,18 @@ const AddExpensePage = () => {
         category: formData.category,
         paymentMethod: formData.paymentMethod,
       };
-      existingData[formData.category] = existingData[formData.category] || [];
-      existingData[formData.category].push(newExpense);
-
+  
+      const updatedData = [...existingData, newExpense];
+      localStorage.setItem("expensesData", JSON.stringify(updatedData));
+  
+      // Save used categories separately
+      const usedCategories = JSON.parse(localStorage.getItem("usedCategories")) || [];
       if (!usedCategories.includes(formData.category)) {
         usedCategories.push(formData.category);
         localStorage.setItem("usedCategories", JSON.stringify(usedCategories));
       }
-
-      localStorage.setItem("expensesData", JSON.stringify(existingData));
+  
+      // Reset form and navigation
       setFormData({
         amount: "",
         description: "",
@@ -82,10 +84,11 @@ const AddExpensePage = () => {
       });
       setErrors({});
       setSuggestions([]);
-      navigation("/")
-      console.log("Form Data Submitted:", existingData);
+      navigation("/");
+      console.log("Form Data Submitted:", updatedData);
     }
   };
+  
 
   const handleSuggestionClick = (category) => {
     setFormData((prev) => ({ ...prev, category }));

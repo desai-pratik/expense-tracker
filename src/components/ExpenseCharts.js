@@ -61,7 +61,7 @@ const Charts = ({ expenses, filteredExpenses }) => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-9 mb-4">
       <div className="p-4 border rounded shadow">
         <h2 className="text-xl font-bold mb-2">Monthly Expenses</h2>
         <div style={{ width: "100%", height: "300px" }}>
